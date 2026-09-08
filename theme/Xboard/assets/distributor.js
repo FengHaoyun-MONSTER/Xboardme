@@ -62,6 +62,7 @@
       orderOverview: '订单经营概览', orderOverviewHint: '统计与订单筛选相互独立，收入为所选时间内订单金额的累计值。',
       todayIncome: '今日收入', todayOrders: '今日订单', yesterdayIncome: '昨日收入', yesterdayOrders: '昨日订单',
       income: '收入', orderCount: '订单', customRange: '自定义', apply: '应用', advancedFilters: '高级筛选', hideFilters: '收起筛选',
+      expandOrderColumns: '展开', collapseOrderColumns: '收起',
       startDate: '开始日期', endDate: '结束日期', minimumAmount: '最低金额', maximumAmount: '最高金额', allPeriods: '全部周期',
       trend: '增长趋势', thisWeek: '本周', thisMonth: '本月', lastNinetyDays: '近三个月', dailyOrders: '每日订单量', dailyIncome: '每日收入',
       firstPage: '首页', previousPage: '上一页', nextPage: '下一页', lastPage: '尾页', jumpTo: '跳至', jump: '跳转', loadMore: '加载更多', pageSize: '每页', totalOrders: '共 {count} 个订单',
@@ -110,6 +111,7 @@
       orderOverview: 'Order performance', orderOverviewHint: 'Analytics are independent from list filters. Income is the sum of order amounts in the selected dates.',
       todayIncome: "Today's income", todayOrders: "Today's orders", yesterdayIncome: "Yesterday's income", yesterdayOrders: "Yesterday's orders",
       income: 'Income', orderCount: 'orders', customRange: 'Custom', apply: 'Apply', advancedFilters: 'More filters', hideFilters: 'Hide filters',
+      expandOrderColumns: 'Expand', collapseOrderColumns: 'Collapse',
       startDate: 'Start date', endDate: 'End date', minimumAmount: 'Minimum amount', maximumAmount: 'Maximum amount', allPeriods: 'All periods',
       trend: 'Growth trend', thisWeek: 'This week', thisMonth: 'This month', lastNinetyDays: 'Last 90 days', dailyOrders: 'Daily orders', dailyIncome: 'Daily income',
       firstPage: 'First', previousPage: 'Previous', nextPage: 'Next', lastPage: 'Last', jumpTo: 'Go to', jump: 'Go', loadMore: 'Load more', pageSize: 'Per page', totalOrders: '{count} orders',
@@ -131,6 +133,7 @@
     orderSettlementStatus: '',
     orderSearch: '',
     orderFiltersOpen: false,
+    orderFixedColumnsExpanded: true,
     orderFilters: { startDate: '', endDate: '', periods: [], minAmount: '', maxAmount: '' },
     orderPage: 1,
     orderPerPage: 20,
@@ -979,9 +982,10 @@
       </tr>${entitlementRow}`;
     }).join('');
     const desktopPagination = `<div class="dist-desktop-pagination"><span>${t('totalOrders').replace('{count}', state.orderTotal)}</span><label>${t('pageSize')}<select id="dist-order-page-size" aria-label="${t('pageSize')}">${[20, 50, 100].map((size) => `<option value="${size}" ${size === state.orderPerPage ? 'selected' : ''}>${size}</option>`).join('')}</select></label><button type="button" data-order-page="1" ${state.orderPage <= 1 ? 'disabled' : ''}>${t('firstPage')}</button><button type="button" data-order-page="${state.orderPage - 1}" ${state.orderPage <= 1 ? 'disabled' : ''}>${t('previousPage')}</button><strong>${state.orderPage} / ${state.orderLastPage}</strong><button type="button" data-order-page="${state.orderPage + 1}" ${state.orderPage >= state.orderLastPage ? 'disabled' : ''}>${t('nextPage')}</button><button type="button" data-order-page="${state.orderLastPage}" ${state.orderPage >= state.orderLastPage ? 'disabled' : ''}>${t('lastPage')}</button><label class="dist-page-jump">${t('jumpTo')} <input id="dist-order-page-input" type="number" min="1" max="${state.orderLastPage}" inputmode="numeric" aria-label="${t('jumpTo')}"><span>${state.locale === 'zh-CN' ? '页' : ''}</span></label><button type="button" data-action="jump-order-page">${t('jump')}</button></div>`;
-    setContent(`<div class="dist-order-toolbar"><div class="dist-order-search"><input id="dist-order-search" type="search" maxlength="512" value="${escapeHtml(state.orderSearch)}" placeholder="${t('orderSearchPlaceholder')}"><button data-action="search-orders">${t('search')}</button><button class="secondary" data-action="clear-order-search" ${state.orderSearch ? '' : 'disabled'}>${t('clear')}</button></div><button type="button" class="secondary dist-filter-toggle" data-action="toggle-order-filters" aria-expanded="${state.orderFiltersOpen}" aria-controls="dist-order-filters">${t(state.orderFiltersOpen ? 'hideFilters' : 'advancedFilters')}</button><button data-action="export-orders">${t('exportExcel')}</button></div>
+    setContent(`<div class="dist-order-toolbar"><div class="dist-order-search"><input id="dist-order-search" type="search" maxlength="512" value="${escapeHtml(state.orderSearch)}" placeholder="${t('orderSearchPlaceholder')}"><button data-action="search-orders">${t('search')}</button><button class="secondary" data-action="clear-order-search" ${state.orderSearch ? '' : 'disabled'}>${t('clear')}</button></div><div class="dist-order-column-controls" role="group" aria-label="${t('actions')}"><button type="button" class="secondary" data-action="expand-order-columns" ${state.orderFixedColumnsExpanded ? 'disabled' : ''}>${t('expandOrderColumns')}</button><button type="button" class="secondary" data-action="collapse-order-columns" ${state.orderFixedColumnsExpanded ? '' : 'disabled'}>${t('collapseOrderColumns')}</button></div><button type="button" class="secondary dist-filter-toggle" data-action="toggle-order-filters" aria-expanded="${state.orderFiltersOpen}" aria-controls="dist-order-filters">${t(state.orderFiltersOpen ? 'hideFilters' : 'advancedFilters')}</button><button data-action="export-orders">${t('exportExcel')}</button></div>
       ${renderOrderFilters()}
-      <div class="dist-table-wrap dist-order-list" tabindex="0" aria-label="${t('orders')}"><table class="dist-orders-table"><colgroup><col class="dist-col-sequence"><col class="dist-col-actions"><col class="dist-col-order-no"><col class="dist-col-order-time"><col class="dist-col-order-type"><col class="dist-col-original"><col class="dist-col-customer"><col class="dist-col-plan"><col class="dist-col-period"><col class="dist-col-amount"><col class="dist-col-devices"><col class="dist-col-traffic"><col class="dist-col-settlement"><col class="dist-col-remark"></colgroup><thead><tr><th>${t('sequence')}</th><th>${t('actions')}</th><th>${t('orderNo')}</th><th>${t('orderTime')}</th><th>${t('orderType')}</th><th>${t('originalOrder')}</th><th>${t('customerName')}</th><th>${t('plan')}</th><th>${t('period')}</th><th>${t('amount')}</th><th>${t('boundDevices')}</th><th>${t('usedTraffic')}</th><th>${t('settlement')}</th><th>${t('remark')}</th></tr></thead>
+      <!-- class="dist-orders-table" -->
+      <div class="dist-table-wrap dist-order-list" tabindex="0" aria-label="${t('orders')}"><table class="dist-orders-table ${state.orderFixedColumnsExpanded ? '' : 'is-order-columns-collapsed'}"><colgroup><col class="dist-col-sequence"><col class="dist-col-actions"><col class="dist-col-order-no"><col class="dist-col-order-time"><col class="dist-col-order-type"><col class="dist-col-original"><col class="dist-col-customer"><col class="dist-col-plan"><col class="dist-col-period"><col class="dist-col-amount"><col class="dist-col-devices"><col class="dist-col-traffic"><col class="dist-col-settlement"><col class="dist-col-remark"></colgroup><thead><tr><th>${t('sequence')}</th><th>${t('actions')}</th><th>${t('orderNo')}</th><th>${t('orderTime')}</th><th>${t('orderType')}</th><th>${t('originalOrder')}</th><th>${t('customerName')}</th><th>${t('plan')}</th><th>${t('period')}</th><th>${t('amount')}</th><th>${t('boundDevices')}</th><th>${t('usedTraffic')}</th><th>${t('settlement')}</th><th>${t('remark')}</th></tr></thead>
       <tbody>${rows || `<tr class="dist-orders-empty"><td colspan="14" class="dist-empty">${t('empty')}</td></tr>`}</tbody></table></div>${desktopPagination}`);
     if (append) window.scrollTo({ top: oldScrollY, behavior: 'instant' });
   }
@@ -1425,6 +1429,11 @@
       state.orderSearch = '';
       state.orderPage = 1;
       try { await renderOrders(); } catch (e) { toast(e.message, 'error'); }
+    } else if (action === 'expand-order-columns' || action === 'collapse-order-columns') {
+      state.orderFixedColumnsExpanded = action === 'expand-order-columns';
+      document.querySelector('.dist-orders-table')?.classList.toggle('is-order-columns-collapsed', !state.orderFixedColumnsExpanded);
+      document.querySelector('[data-action="expand-order-columns"]')?.toggleAttribute('disabled', state.orderFixedColumnsExpanded);
+      document.querySelector('[data-action="collapse-order-columns"]')?.toggleAttribute('disabled', !state.orderFixedColumnsExpanded);
     } else if (action === 'toggle-order-filters') {
       state.orderFiltersOpen = !state.orderFiltersOpen;
       const panel = document.getElementById('dist-order-filters');
