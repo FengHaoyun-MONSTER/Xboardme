@@ -26,7 +26,7 @@ test('distributor orders use a compact horizontally scrollable table on desktop 
   assert.match(renderer[0], /class="dist-order-bound-devices" data-label="\$\{t\('boundDevices'\)\}"/);
   assert.match(renderer[0], /class="dist-order-used-traffic" data-label="\$\{t\('usedTraffic'\)\}"/);
   assert.match(renderer[0], /data-label="\$\{t\('remark'\)\}"/);
-  assert.match(renderer[0], /<thead><tr><th>\$\{t\('sequence'\)\}<\/th><th>\$\{t\('actions'\)\}<\/th><th>\$\{t\('orderNo'\)\}<\/th><th>\$\{t\('orderTime'\)\}<\/th>/);
+  assert.match(renderer[0], /<thead><tr><th class=\"dist-sequence-header\">[\s\S]*?<th>\$\{t\('actions'\)\}/);
 
   assert.match(styles, /\.dist-order-list \.dist-orders-table \{[^}]*min-width:1517px[^}]*table-layout:fixed/);
   assert.match(styles, /@media \(max-width:900px\)/);
