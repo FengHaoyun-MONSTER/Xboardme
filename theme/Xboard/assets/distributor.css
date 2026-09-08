@@ -222,8 +222,6 @@ html.distributor-mode.dist-modal-open,html.distributor-mode.dist-modal-open body
   .dist-order-actions.utility-count-1>:not(.dist-renew-btn) { grid-column:1/-1; }
   .dist-order-actions>button:disabled { opacity:.58; cursor:wait; }
   .dist-order-actions>.dist-action-disabled { border-color:var(--dist-border); color:var(--dist-muted); background:var(--dist-bg); cursor:not-allowed; }
-  .dist-entitlement-toggle:after { content:'⌄'; display:inline-block; margin-left:6px; transition:transform .18s ease; }
-  .dist-entitlement-toggle[aria-expanded='true']:after { transform:rotate(180deg); }
   .dist-renewal-order-row { margin-left:14px; border-left:3px solid color-mix(in srgb,var(--dist-primary) 55%,var(--dist-border)); }
   .dist-renewal-order-row .dist-order-identity { padding-left:34px!important; }
   .dist-renewal-order-row .dist-order-identity:before { top:16px; left:12px; }
@@ -256,7 +254,6 @@ html.distributor-mode.dist-modal-open,html.distributor-mode.dist-modal-open body
 }
 @media (prefers-reduced-motion:reduce) {
   .dist-subscription-qr-modal,.dist-renewal-modal { animation:none; }
-  .dist-entitlement-toggle:after { transition:none; }
 }
 
 /* Compact distributor order table: the sequence and actions columns stay visible while the data columns scroll. */
