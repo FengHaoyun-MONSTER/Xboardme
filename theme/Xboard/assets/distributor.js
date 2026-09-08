@@ -747,10 +747,15 @@
   function toggleEntitlement(entitlementToggle, entitlementRow) {
     const willExpand = entitlementToggle.getAttribute('aria-expanded') !== 'true';
     entitlementToggle.setAttribute('aria-expanded', String(willExpand));
-    entitlementToggle.setAttribute('aria-label', t(willExpand ? 'hideEntitlement' : 'viewEntitlement'));
+    entitlementToggle.setAttribute('aria-label', t('viewEntitlement'));
     entitlementToggle.textContent = t('entitlementAction');
-    entitlementRow.hidden = !willExpand;
-    entitlementToggle.closest?.('tr')?.classList.toggle('is-entitlement-open', willExpand);
+    entitlementRow.hidden = true;
+    entitlementToggle.closest?.('tr')?.classList.remove('is-entitlement-open');
+    if (willExpand && typeof state !== 'undefined') {
+      state.modal = { type: 'entitlement', trigger: entitlementToggle, content: entitlementRow.querySelector('td > div')?.innerHTML || '' };
+      renderModal();
+      document.querySelector('#dist-modal-root .dist-modal-x')?.focus({ preventScroll: true });
+    }
   }
 
   function orderSummaryTitle(kind, range) {
@@ -1173,6 +1178,10 @@
         <div class="dist-modal-actions"><button data-modal-action="cancel" ${modal.submitting ? 'disabled' : ''}>${t('cancel')}</button><button class="primary" data-modal-action="confirm-renewal" ${modal.submitting ? 'disabled' : ''}>${modal.submitting ? t('loading') : t('renewConfirm')}</button></div></section></div>`;
       return;
     }
+    if (state.modal.type === 'entitlement') {
+      root.innerHTML = `<div class="dist-modal-backdrop dist-order-action-backdrop"><section class="dist-modal dist-entitlement-modal" role="dialog" aria-modal="true" aria-label="${t('entitlement')}"><button class="dist-modal-x" data-modal-action="cancel" aria-label="${t('closePopup')}">×</button>${state.modal.content}</section></div>`;
+      return;
+    }
     const modal = state.modal;
     const delivery = modal.delivery;
     const claimed = delivery.delivery_status === 1;
@@ -1190,10 +1199,16 @@
   }
 
   function closeModal() {
+    const entitlementTrigger = state.modal?.type === 'entitlement' ? state.modal.trigger : null;
     const modalTrigger = state.modalTrigger;
     state.modal = null;
     state.modalTrigger = null;
     renderModal();
+    if (entitlementTrigger?.isConnected) {
+      entitlementTrigger.setAttribute('aria-expanded', 'false');
+      entitlementTrigger.setAttribute('aria-label', t('viewEntitlement'));
+      window.requestAnimationFrame(() => entitlementTrigger.focus({ preventScroll: true }));
+    }
     if (!modalTrigger) return;
     window.requestAnimationFrame(() => {
       const focusTarget = modalTrigger?.isConnected
@@ -1545,7 +1560,7 @@
   document.addEventListener('click', (event) => {
     if (!state.active) return;
     if (event.target.closest('[data-modal-action]')) handleModalAction(event.target);
-    else if (event.target.classList.contains('dist-modal-backdrop') && isMobileOrderActionModal()) closeModal();
+    else if (event.target.classList.contains('dist-modal-backdrop') && (isMobileOrderActionModal() || state.modal?.type === 'entitlement')) closeModal();
     else handleAction(event.target);
   });
   document.addEventListener('change', (event) => {
@@ -1561,7 +1576,7 @@
   });
   document.addEventListener('keydown', (event) => {
     if (!state.active) return;
-    if (event.key === 'Escape' && isMobileOrderActionModal()) {
+    if (event.key === 'Escape' && (isMobileOrderActionModal() || state.modal?.type === 'entitlement')) {
       event.preventDefault();
       closeModal();
       return;
