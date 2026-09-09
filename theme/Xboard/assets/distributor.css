@@ -336,7 +336,6 @@ html.distributor-mode.dist-modal-open,html.distributor-mode.dist-modal-open body
   .dist-order-search>.dist-order-columns-toggle { width:auto!important; min-width:58px!important; height:32px!important; }
   .dist-order-toolbar>.dist-order-columns-toggle { display:none!important; }
   .dist-order-toolbar>[data-action="export-orders"] { grid-column:2!important; grid-row:3; width:100%!important; }
-  .dist-order-list>.dist-order-columns-toggle { display:none!important; }
   .dist-order-search>.dist-order-columns-toggle { display:none!important; }
   .dist-order-list { position:relative; padding-top:36px; }
   .dist-order-columns-toggle-mobile { position:absolute!important; top:0; left:0; display:inline-flex!important; align-items:center; justify-content:center; width:36px!important; min-width:36px!important; max-width:36px!important; height:36px!important; padding:0!important; z-index:10; }
