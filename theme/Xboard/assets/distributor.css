@@ -336,7 +336,10 @@ html.distributor-mode.dist-modal-open,html.distributor-mode.dist-modal-open body
   .dist-order-search>.dist-order-columns-toggle { width:auto!important; min-width:58px!important; height:32px!important; }
   .dist-order-toolbar>.dist-order-columns-toggle { display:none!important; }
   .dist-order-toolbar>[data-action="export-orders"] { grid-column:2!important; grid-row:3; width:100%!important; }
-  .dist-order-search>.dist-order-columns-toggle { display:none!important; }
-  .dist-order-list { position:relative; padding-top:36px; }
-  .dist-order-list>.dist-order-columns-toggle-mobile { position:fixed!important; top:168px!important; left:10px!important; display:inline-flex!important; align-items:center; justify-content:center; width:36px!important; min-width:36px!important; max-width:36px!important; height:36px!important; padding:0!important; border:1px solid var(--dist-primary)!important; border-radius:0!important; background:var(--dist-primary)!important; color:#fff!important; z-index:20!important; }
+  .dist-order-search>.dist-order-columns-toggle,.dist-order-toolbar>.dist-filter-toggle,.dist-order-toolbar>[data-action="export-orders"] { display:none!important; }
+  .dist-order-list { position:relative; padding-top:0; }
+  .dist-mobile-order-controls { position:sticky; top:0; z-index:7; display:grid; grid-template-columns:36px minmax(0,1fr) minmax(0,1fr); gap:6px; align-items:stretch; height:36px; margin:0 0 0; background:var(--dist-panel); }
+  .dist-mobile-order-controls button { width:100%; height:36px; min-height:36px; min-width:0; padding:0 6px; border:1px solid var(--dist-primary); border-radius:0; color:#fff; background:var(--dist-primary); font-size:12px; font-weight:700; white-space:nowrap; }
+  .dist-mobile-order-controls .dist-order-columns-toggle-mobile { position:static!important; top:auto!important; left:auto!important; display:inline-flex!important; align-items:center; justify-content:center; width:36px!important; min-width:36px!important; max-width:36px!important; height:36px!important; padding:0!important; border-radius:0!important; z-index:auto!important; }
+  .dist-order-list .dist-orders-table th { top:36px!important; }
 }
