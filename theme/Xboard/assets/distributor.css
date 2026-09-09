@@ -338,5 +338,5 @@ html.distributor-mode.dist-modal-open,html.distributor-mode.dist-modal-open body
   .dist-order-toolbar>[data-action="export-orders"] { grid-column:2!important; grid-row:3; width:100%!important; }
   .dist-order-search>.dist-order-columns-toggle { display:none!important; }
   .dist-order-list { position:relative; padding-top:36px; }
-  .dist-order-list>.dist-order-columns-toggle-mobile { position:absolute!important; top:0!important; left:0!important; display:inline-flex!important; align-items:center; justify-content:center; width:36px!important; min-width:36px!important; max-width:36px!important; height:36px!important; padding:0!important; border-radius:0!important; z-index:10!important; }
+  .dist-order-list>.dist-order-columns-toggle-mobile { position:fixed!important; top:168px!important; left:10px!important; display:inline-flex!important; align-items:center; justify-content:center; width:36px!important; min-width:36px!important; max-width:36px!important; height:36px!important; padding:0!important; border:1px solid var(--dist-primary)!important; border-radius:0!important; background:var(--dist-primary)!important; color:#fff!important; z-index:20!important; }
 }
