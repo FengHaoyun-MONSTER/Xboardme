@@ -329,3 +329,9 @@ html.distributor-mode.dist-modal-open,html.distributor-mode.dist-modal-open body
 .dist-order-list .dist-orders-table th { position:sticky!important; top:0!important; z-index:5!important; }
 .dist-order-list .dist-orders-table>thead>tr>th:first-child { position:sticky!important; left:0!important; z-index:6!important; }
 .dist-order-list .dist-orders-table>thead>tr>th:nth-child(2) { position:sticky!important; left:36px!important; z-index:6!important; }
+.dist-order-toolbar>.dist-order-columns-toggle { position:static!important; display:inline-flex!important; align-items:center; justify-content:center; width:auto!important; min-width:44px!important; max-width:none!important; height:32px!important; padding:0 9px!important; transform:none!important; }
+@media (max-width:900px) {
+  .dist-order-toolbar>.dist-order-columns-toggle { grid-column:1; grid-row:3; width:100%!important; min-width:0!important; height:44px!important; }
+  .dist-order-toolbar>[data-action="export-orders"] { grid-column:2!important; grid-row:3; width:100%!important; }
+  .dist-order-list>.dist-order-columns-toggle { display:none!important; }
+}
