@@ -32,9 +32,9 @@ test('entitlement is collapsed by default and has an accessible view-hide toggle
 
   toggleEntitlement(button, row);
   assert.equal(attributes.get('aria-expanded'), 'true');
-  assert.equal(attributes.get('aria-label'), 'hideEntitlement');
+  assert.equal(attributes.get('aria-label'), 'viewEntitlement');
   assert.equal(button.textContent, 'entitlementAction');
-  assert.equal(row.hidden, false);
+  assert.equal(row.hidden, true);
 
   toggleEntitlement(button, row);
   assert.equal(attributes.get('aria-expanded'), 'false');
