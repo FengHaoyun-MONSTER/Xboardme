@@ -1438,9 +1438,11 @@
       state.orderFiltersOpen = !state.orderFiltersOpen;
       const panel = document.getElementById('dist-order-filters');
       if (panel) panel.hidden = !state.orderFiltersOpen;
-      const button = target.closest('[data-action]');
-      button?.setAttribute('aria-expanded', String(state.orderFiltersOpen));
-      if (button) button.textContent = t(state.orderFiltersOpen ? 'hideFilters' : 'advancedFilters');
+      const label = t(state.orderFiltersOpen ? 'hideFilters' : 'advancedFilters');
+      document.querySelectorAll('[data-action="toggle-order-filters"]').forEach((button) => {
+        button.setAttribute('aria-expanded', String(state.orderFiltersOpen));
+        button.textContent = label;
+      });
     } else if (action === 'apply-order-filters') {
       const { settlementStatus, ...filters } = collectOrderFilters();
       state.orderSettlementStatus = settlementStatus;
